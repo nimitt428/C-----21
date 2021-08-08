@@ -1,85 +1,93 @@
+
 const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
+const Body = Matter.Body;
 
-let engine;
-let world;
+
+
+var engine;
+var world;
+
+
+var Right_side,Left_side,Bottom_side;
 var ball;
-var ground;
-var con;
-var ball2;
-var con2;
 
+function preload()
+{
+ 
+  
+}
 
 function setup() {
-  createCanvas(400,400);
-  engine = Engine.create();
-  
-  world = engine.world;
+	createCanvas(1300, 750);
 
-  var ball_options = {
-    restitution: 0.8
-  }
-  
-  
-  ball = Bodies.circle(200,50,10,ball_options);
-  World.add(world,ball);
 
-  ball2 = Bodies.circle(200,340,15,ball_options);
- // World.add(world,ball2)
-  
-  con = Matter.Constraint.create({
-          pointA:{x:200,y:20},
-          bodyB:ball,
-          pointB:{x:0,y:0},
-          length:100,
-          stiffness:0.1
-        });
-  
-      World.add(world,con);
-     
-   con2 = Matter.Constraint.create(
-     {
-    bodyA : ball,
-    pointA : {x:0,y:0},
-    bodyB : ball2,
-    pointB : {x : 0 , y : 0 },
-    length:100,
-    stiffness:0.1
- }
+	engine = Engine.create();
+	world = engine.world;
  
- )   
-  World.add(world,con2);
-  
-  rectMode(CENTER);
-  ellipseMode(RADIUS);
-  
-}
-
-function draw() 
-{
-  background(51);
-  Engine.update(engine);
-  ellipse(ball.position.x,ball.position.y,10);
-  ellipse(ball2.position.x,ball2.position.y,15);
-
-  push();
-  strokeWeight(2);
-  stroke(255);
-  line(con.pointA.x,con.pointA.y,ball.position.x,ball.position.y);
-  line(ball.position.x,ball.position.y,ball2.position.x,ball2.position.y);
-  pop();
-  
    
+  
+ 
+	//Create the Bodies Here.
+   var ball_options = {
+   isStatic : false, 
+   restitution : 0.4,
+   friction : 0 ,
+   density:1
+   
+   }
+	ball =Bodies.circle(100,50,40,ball_options)
+	World.add(world,ball)
+    
+	bottom_side = new Ground(width/2,670,width,40)
+	Left_side = new Ground(820,550,20,200)
+  Right_side = new Ground (1070,550,20,200)
 
-
+	Engine.run(engine);
+  
 }
 
-function keyPressed()
-{
-  if(keyCode==RIGHT_ARROW)
-    {
-      Matter.Body.applyForce(ball,{x:0,y:0},{x:0.05,y:0});
-    }
+
+function draw() {
+  rectMode(CENTER);
+  background("cyan");
+  ellipse(ball.position.x,ball.position.y,50)
+  bottom_side.display();
+  Right_side.display();
+  Left_side.display();
+
+  if(keyDown("UP_ARROW")){
+  VForce();
+  HForce();
+  
+
+   }
+  
+
+
+  drawSprites();
+ 
 }
+
+
+ function VForce(){
+
+ Matter.Body.applyForce(ball,{x:0,y:0},{x:0,y:150})
+
+
+
+
+ }
+
+ function HForce(){
+
+  Matter.Body.applyForce(ball,{x:0,y:0},{x:150,y:0})
+ 
+ 
+ 
+ 
+  }
+ 
+ 
 

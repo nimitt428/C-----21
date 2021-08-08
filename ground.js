@@ -12,14 +12,16 @@ class Ground
     World.add(world, this.body);
   }
 
-  show() {
-    let pos = this.body.position;
-
+  display() {
+    var pos = this.body.position;
     push();
     rectMode(CENTER);
-    stroke(255);
-    fill(127);
+    stroke(253);
+    fill("red");
     rect(pos.x, pos.y, this.w, this.h);
     pop();
   }
+  
 }
+
+
